@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Welcome to the Dashboard</h2>
+    
+    <!-- Display the username of the logged-in user -->
+    <p>Hello, <%= session.getAttribute("username") %>!</p>
+    
+    <!-- Display other user information -->
+    <p>User Information:</p>
+    <ul>
+    <li>Id: <%= session.getAttribute("userId") %></li>
+        <li>Username: <%= session.getAttribute("username") %></li>
+        <!-- You can display other user information here -->
+    </ul>
+    <a href="addTask.jsp">Add a Task</a>
+    
+    <!-- Add a logout link to log the user out -->
+    <a href="logout.jsp">Logout</a>
+</body>
+</html>
+sss

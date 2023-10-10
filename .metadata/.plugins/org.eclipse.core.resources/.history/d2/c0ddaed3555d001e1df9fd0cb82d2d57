@@ -1,0 +1,43 @@
+import java.io.IOException;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/AddTaskServlet")
+public class AddTaskServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Récupérez les données du formulaire
+        String description = request.getParameter("description");
+        String state = request.getParameter("state");
+
+        // Vérifiez si la case à cocher a été cochée
+        boolean isCompleted = "completed".equals(state);
+
+        // Récupérez l'ID de l'utilisateur à partir du champ caché dans le formulaire
+        int userId = Integer.parseInt(request.getParameter("userId"));
+
+        // Créez une instance de la tâche
+        Task task = new Task(description, isCompleted, userId);
+
+        // Utilisez le DAO pour ajouter la tâche dans la base de données
+        TaskDAO taskDAO = new TaskDAO();
+        boolean taskAdded = taskDAO.addTask(task);
+
+        if (taskAdded) {
+            // Récupérez la liste des tâches de l'utilisateur depuis le DAO
+            List<Task> userTasks = taskDAO.getTasksForUser(userId);
+
+            // Stockez la liste des tâches dans la session
+            request.getSession().setAttribute("userTasks", userTasks);
+
+            // Redirigez l'utilisateur vers la liste des tâches
+            request.getRequestDispatcher("listTasks.jsp").forward(request, response);
+        } else {
+            // Gérez l'échec de l'ajout de la tâche ici (par exemple, affichez un message d'erreur)
+            response.sendRedirect("error.jsp");
+        }
+    }
+}

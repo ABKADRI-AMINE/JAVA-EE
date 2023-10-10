@@ -1,0 +1,15 @@
+<%@ page ipage language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h2>User Dashboard</h2>
+   
+
+    <p>Hello, </p>
+    
+
+</body>
+</html>

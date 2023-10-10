@@ -1,0 +1,41 @@
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/register")
+public class UserRegistrationServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Get user input from the registration form
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Validate the input (you should add proper validation)
+
+        // Assuming you have a UserDAO for database operations
+        UserDAO userDAO = new UserDAO();
+
+        // Check if the username already exists
+        if (userDAO.isUserExists(username)) {
+            // Handle username already exists error
+            response.sendRedirect("register.jsp?error=exists");
+            return;
+        }
+
+        // Create a new user
+        User newUser = new User(username, password); // You should hash the password
+
+        // Insert the new user into the database
+        if (userDAO.registerUser(newUser)) {
+            // Registration successful, redirect to login page
+            response.sendRedirect("login.jsp?success=true");
+        } else {
+            // Registration failed, handle error
+            response.sendRedirect("register.jsp?error=failed");
+        }
+    }
+}

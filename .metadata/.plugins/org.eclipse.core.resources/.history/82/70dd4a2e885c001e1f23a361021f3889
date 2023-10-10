@@ -1,0 +1,35 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Login</title>
+</head>
+<body>
+    <h2>User Login</h2>
+    <form action="login" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <input type="submit" value="Login">
+    </form>
+
+    <!-- Display error message if login fails -->
+    <c:if test="${not empty param.error}">
+        <p style="color: red;">
+            <c:choose>
+                <c:when test="${param.error == 'invalid'}">
+                    Invalid username or password. Please try again.
+                </c:when>
+                <!-- Ajoutez d'autres messages d'erreur personnalisés si nécessaire -->
+                <c:otherwise>
+                    An error occurred during login. Please try again later.
+                </c:otherwise>
+            </c:choose>
+        </p>
+    </c:if>
+    <p style="color: green;">Not Have an account <a href="register.jsp">Register</a>.</p>
+</body>
+</html>

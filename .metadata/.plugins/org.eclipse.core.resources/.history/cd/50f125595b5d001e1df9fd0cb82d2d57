@@ -1,0 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Welcome to the Dashboard</h2>
+    
+    <!-- Display the username of the logged-in user -->
+    <p>Hello, <%= session.getAttribute("username") %>!</p>
+    <p>User ID: <%= session.getAttribute("userId") %></p>
+    
+    <!-- Display the user's tasks -->
+    <p>User Tasks:</p>
+    <ul>
+        <!-- Loop through the tasks and display them -->
+        <c:forEach var="task" items="${tasks}">
+            <li>${task.getDescription()} - ${task.isCompleted() ? 'Completed' : 'Incomplete'}</li>
+        </c:forEach>
+    </ul>
+    
+    <a href="addTask.jsp">Add a Task</a>
+    
+    <!-- Add a logout link to log the user out -->
+    <a href="logout.jsp">Logout</a>
+</body>
+</html>

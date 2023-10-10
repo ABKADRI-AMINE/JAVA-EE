@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Welcome to the Dashboard</h2>
+    
+    <!-- Display the username of the logged-in user -->
+    <p>Hello, <%= session.getAttribute("username") %></p>
+    <p>User ID: <%= session.getAttribute("userId") %></p>
+    
+    <!-- Display the user's tasks -->
+    <p>User Tasks:</p>
+    <ul>
+       <c:choose>
+    <c:when test="${not empty tasks}">
+        <ul>
+            <c:forEach var="task" items="${tasks}">
+                <li>${task.getDescription()} - ${task.isCompleted() ? 'Completed' : 'Incomplete'}</li>
+            </c:forEach>
+        </ul>
+    </c:when>
+    <c:otherwise>
+        <p>You have no tasks.</p>
+    </c:otherwise>
+</c:choose>
+
+    </ul>
+    
+    <a href="addTask.jsp">Add a Task</a>
+    
+    <!-- Add a logout link to log the user out -->
+    <a href="logout.jsp">Logout</a>
+</body>
+</html>

@@ -1,0 +1,39 @@
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/dashboard")
+public class DashboardServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        // Get the userId from the session
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+        
+        if(userId == null) {
+            // User is not logged in, redirect to login page
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        // Create an instance of TaskDAO
+        TaskDAO taskDAO = new TaskDAO();
+        
+        // Fetch the tasks for the user
+        List<Task> tasks = taskDAO.getTasksForUser(userId);
+        
+        // Set the tasks as a request attribute
+        request.setAttribute("tasks", tasks);
+        
+        // Forward the request to dashbrd.jsp
+        RequestDispatcher dispatcher = request.getRequestDispatcher("dashbrd.jsp");
+        dispatcher.forward(request, response);
+    }
+}

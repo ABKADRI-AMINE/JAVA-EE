@@ -1,0 +1,30 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List Tasks</title>
+</head>
+<body>
+    <h2>List of Tasks</h2>
+    
+    <!-- Affichez la liste des tâches ici -->
+    <ul>
+        <!-- Utilisez une boucle pour afficher chaque tâche -->
+        <%-- Code Java pour récupérer et afficher les tâches --%>
+        <%
+            // Placez le code Java ici pour récupérer la liste des tâches de l'utilisateur
+            // Utilisez le TaskDAO ou une autre classe pour obtenir les données
+            // Par exemple :
+            List<Task> tasks = taskDAO.getTasksForUser(userId); // Remplacez userId par l'ID de l'utilisateur connecté
+
+            // Parcourez la liste des tâches et affichez-les
+            for (Task task : tasks) {
+        %>
+        <li><%= task.getDescription() %> (Completed: <%= task.isCompleted() %>)</li>
+        <% } %>
+    </ul>
+    
+    <!-- Ajoutez un lien pour revenir au tableau de bord -->
+    <a href="dashbrd.jsp">Back to Dashboard</a>
+</body>
+</html>

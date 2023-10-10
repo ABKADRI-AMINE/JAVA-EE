@@ -1,0 +1,43 @@
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.RequestDispatcher;
+
+@WebServlet("/dashboard")
+public class DashboardServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Vérifiez si l'utilisateur est connecté (vous devrez implémenter cette logique)
+        // Vous pouvez utiliser la session pour stocker des informations sur l'utilisateur connecté
+
+        // Remplacez ceci par votre logique de vérification de l'utilisateur connecté
+        boolean userLoggedIn = true; // Changez cela en fonction de votre logique d'authentification
+
+        if (userLoggedIn) {
+            // Récupérez l'ID de l'utilisateur depuis la session (vous devrez le stocker lors de la connexion)
+            int userId = (int) request.getSession().getAttribute("userId");
+
+            // Utilisez TaskDAO pour récupérer les tâches de l'utilisateur avec l'ID correspondant
+            TaskDAO taskDAO = new TaskDAO();
+            List<Task> tasks = taskDAO.getTasksForUser(userId);
+
+            // Stockez la liste des tâches dans la requête pour l'afficher dans la JSP
+            request.setAttribute("tasks", tasks);
+
+            // Redirigez vers la page du tableau de bord (dashboard.jsp)
+            RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            // L'utilisateur n'est pas connecté, vous pouvez rediriger vers une page de connexion
+            response.sendRedirect("login.jsp");
+        }
+    }
+}

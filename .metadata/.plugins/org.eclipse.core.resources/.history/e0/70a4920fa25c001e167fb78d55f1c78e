@@ -1,0 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Task</title>
+</head>
+<body>
+    <h2>Add a Task</h2>
+    <form action="AddTaskServlet" method="post">
+        <label for="description">Description:</label>
+        <input type="text" name="description" required><br><br>
+        
+        <label for="state">State:</label>
+        <input type="checkbox" name="state" value="completed"> Completed<br><br>
+        
+        <input type="submit" value="Add Task">
+    </form>
+</body>
+</html>

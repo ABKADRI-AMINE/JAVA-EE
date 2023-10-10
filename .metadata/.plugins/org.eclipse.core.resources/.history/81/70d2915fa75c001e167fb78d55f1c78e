@@ -1,0 +1,108 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class UserDAO {
+    // Load the MySQL JDBC driver
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException("MySQL JDBC driver not found. Make sure it's in your classpath.");
+        }
+    }
+
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/todoproject";
+    private static final String JDBC_USER = "root";
+    private static final String JDBC_PASSWORD = "";
+
+    // Check if a user with the given username exists in the database
+    public boolean isUserExists(String username) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE username = ?")) {
+
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // If a row is returned, the user exists
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Handle the exception appropriately in a production application
+        }
+    }
+
+    // Register a new user in the database
+    public boolean registerUser(User user) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO user (username, password) VALUES (?, ?)")) {
+
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            int rowsAffected = ps.executeUpdate();
+
+            return rowsAffected > 0; // Registration successful if one or more rows were affected
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Handle the exception appropriately in a production application
+        }
+    }
+    public boolean validateUserCredentials(String username, String password) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE username = ? AND password = ?")) {
+
+            ps.setString(1, username);
+            ps.setString(2, password); // You should hash the password before comparing
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // If a row is returned, the credentials are valid
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Handle the exception appropriately in a production application
+        }
+    }
+    public User getUserInfo(String username) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE username = ?")) {
+
+            ps.setString(1, username);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String fetchedUsername = rs.getString("username");
+                    String fetchedPassword = rs.getString("password");
+                    // Fetch other user information as needed
+
+                    return new User(fetchedUsername, fetchedPassword);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // Return null if user not found or an error occurs
+    }
+    public int getUserIdByUsername(String username) {
+        int userId = -1; // Default value if user is not found or an error occurs
+
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement("SELECT id FROM user WHERE username = ?")) {
+
+            ps.setString(1, username);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userId = rs.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return userId;
+    }
+}
+}

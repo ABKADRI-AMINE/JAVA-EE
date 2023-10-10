@@ -1,0 +1,33 @@
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/login")
+public class UserLoginServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Get user input from the login form
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Validate the input (you should add proper validation)
+
+        // Assuming you have a UserDAO for database operations
+        UserDAO userDAO = new UserDAO();
+
+        // Check if the username and password are valid
+        if (userDAO.validateUserCredentials(username, password)) {
+            // Authentication successful, set the username in the session
+            request.getSession().setAttribute("username", username);
+            response.sendRedirect("dashbrd.jsp");
+        } else {
+            // Authentication failed, set an error message as a request attribute
+            request.setAttribute("errorMessage", "Invalid username or password. Please try again.");
+            // Forward the request to the login page
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+    }
+}

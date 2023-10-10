@@ -1,0 +1,67 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TaskDAO {
+    // Charge le pilote JDBC MySQL
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Pilote MySQL JDBC introuvable. Assurez-vous qu'il est dans votre classpath.");
+        }
+    }
+
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/todoproject";
+    private static final String JDBC_USER = "root";
+    private static final String JDBC_PASSWORD = "";
+
+    // Ajoute une nouvelle tâche dans la base de données
+    public boolean addTask(Task task) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO todolist (description, state, user_id) VALUES (?, ?, ?)")) {
+
+            ps.setString(1, task.getDescription());
+            ps.setBoolean(2, task.isCompleted());
+            ps.setInt(3, task.getUserId());
+
+            int rowsAffected = ps.executeUpdate();
+
+            return rowsAffected > 0; // Tâche ajoutée avec succès si une ou plusieurs lignes ont été affectées
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Gérer l'exception de manière appropriée dans une application de production
+        }
+    }
+
+    // Récupère les tâches pour un utilisateur spécifique depuis la base de données
+    	public List<Task> getTasksForUser(int userId) {
+    	    List<Task> tasks = new ArrayList<>();
+    	    try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+    	         PreparedStatement ps = conn.prepareStatement("SELECT * FROM todolist WHERE user_id = ?")) {
+    	        ps.setInt(1, userId);
+    	        try (ResultSet rs = ps.executeQuery()) {
+    	            while (rs.next()) {
+    	                int taskId = rs.getInt("id");
+    	                String description = rs.getString("description");
+    	                boolean completed = rs.getBoolean("state");
+    	                Task task = new Task(taskId, description, completed, userId);
+    	                tasks.add(task);
+    	            }
+    	        }
+    	    } catch (SQLException e) {
+    	        e.printStackTrace(); // Log the exception
+    	    }
+    	    System.out.println("Number of tasks retrieved: " + tasks.size()); // Log the number of tasks retrieved
+    	    return tasks;
+    	}
+
+
+
+    // Vous pouvez implémenter d'autres méthodes pour mettre à jour et supprimer des tâches au besoin
+}

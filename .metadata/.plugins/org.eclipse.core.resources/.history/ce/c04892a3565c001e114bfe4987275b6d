@@ -1,0 +1,16 @@
+// Check if the provided username and password are valid
+public boolean isValidUser(String username, String password) {
+    try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+         PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE username = ? AND password = ?")) {
+
+        ps.setString(1, username);
+        ps.setString(2, password); // You should hash the password before comparing
+
+        try (ResultSet rs = ps.executeQuery()) {
+            return rs.next(); // If a row is returned, the user is valid
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false; // Handle the exception appropriately in a production application
+    }
+}

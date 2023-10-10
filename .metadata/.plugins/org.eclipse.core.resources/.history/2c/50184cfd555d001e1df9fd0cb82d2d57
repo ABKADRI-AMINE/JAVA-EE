@@ -1,0 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List Tasks</title>
+</head>
+<body>
+    <h2>List of Tasks</h2>
+    
+    <!-- Affichez la liste des tâches ici -->
+    <ul>
+        <!-- Utilisez une boucle pour afficher chaque tâche -->
+        <%
+            // Récupérez les tâches de l'utilisateur à partir de la session
+            List<Task> tasks = (List<Task>) session.getAttribute("userTasks");
+
+            // Parcourez la liste des tâches et affichez-les
+            for (Task task : tasks) {
+        %>
+        <li><%= task.getDescription() %> (Completed: <%= task.isCompleted() %>)</li>
+        <% } %>
+    </ul>
+    
+    <!-- Ajoutez un lien pour revenir au tableau de bord -->
+    <a href="dashbrd.jsp">Back to Dashboard</a>
+</body>
+</html>

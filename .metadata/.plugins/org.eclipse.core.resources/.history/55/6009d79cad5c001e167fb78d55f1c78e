@@ -1,0 +1,46 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="Task" %>
+<%@ page import="TaskDAO" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Welcome to the Dashboard</h2>
+    
+    <!-- Display the username of the logged-in user -->
+    <p>Hello, <%= session.getAttribute("username") %>!</p>
+    
+    <!-- Display other user information -->
+    <p>User Information:</p>
+    <ul>
+        <li>Id: <%= session.getAttribute("userId") %></li>
+        <li>Username: <%= session.getAttribute("username") %></li>
+        <!-- You can display other user information here -->
+    </ul>
+    <a href="addTask.jsp">Add a Task</a>
+    
+    <!-- Add a logout link to log the user out -->
+    <a href="logout.jsp">Logout</a>
+    
+    <!-- Display the user's tasks -->
+    <h3>Your Tasks:</h3>
+    <ul>
+        <% 
+            // Importez la classe Task et TaskDAO si ce n'est pas déjà fait
+            // Utilisez le DAO pour récupérer les tâches de l'utilisateur actuellement connecté
+            int userId = (int) session.getAttribute("userId");
+            TaskDAO taskDAO = new TaskDAO();
+            List<Task> userTasks = taskDAO.getTasksForUser(userId);
+
+            // Parcourez les tâches et affichez-les
+            for (Task task : userTasks) {
+        %>
+        <li><%= task.getDescription() %> - <%= task.isCompleted() ? "Completed" : "Not Completed" %></li>
+        <% } %>
+    </ul>
+</body>
+</html>

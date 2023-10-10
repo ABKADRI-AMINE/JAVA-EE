@@ -1,0 +1,10 @@
+127.0.0.1 - - [19/Sep/2023:08:37:18 +0200] "GET / HTTP/1.1" 404 681
+0:0:0:0:0:0:0:1 - - [19/Sep/2023:08:37:19 +0200] "GET /ConverterCurrency/CurrencyConverterServlet HTTP/1.1" 405 743
+0:0:0:0:0:0:0:1 - - [19/Sep/2023:08:37:20 +0200] "GET /favicon.ico HTTP/1.1" 404 692
+127.0.0.1 - - [19/Sep/2023:08:38:17 +0200] "GET / HTTP/1.1" 404 681
+0:0:0:0:0:0:0:1 - - [19/Sep/2023:08:38:18 +0200] "GET /ConverterCurrency/CurrencyConverterServlet HTTP/1.1" 405 743
+0:0:0:0:0:0:0:1 - - [19/Sep/2023:08:38:18 +0200] "GET /favicon.ico HTTP/1.1" 404 692
+0:0:0:0:0:0:0:1 - - [19/Sep/2023:08:38:23 +0200] "GET /ConverterCurrency/CurrencyConverterServlet HTTP/1.1" 405 743
+0:0:0:0:0:0:0:1 - - [19/Sep/2023:08:38:23 +0200] "GET /ConverterCurrency/CurrencyConverterServlet HTTP/1.1" 405 743
+0:0:0:0:0:0:0:1 - - [19/Sep/2023:08:38:24 +0200] "GET /ConverterCurrency/CurrencyConverterServlet HTTP/1.1" 405 743
+127.0.0.1 - - [19/Sep/2023:08:41:16 +0200] "GET / HTTP/1.1" 404 681

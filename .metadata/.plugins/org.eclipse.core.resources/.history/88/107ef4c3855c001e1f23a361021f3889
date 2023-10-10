@@ -1,0 +1,30 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+</head>
+<body>
+    <h2>User Registration</h2>
+    <form action="register" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <input type="submit" value="Register">
+    </form>
+
+    <!-- Display error or success messages here if needed -->
+    <c:if test="${param.error == 'exists'}">
+        <p style="color: red;">Username already exists. Please choose a different username.</p>
+    </c:if>
+    <c:if test="${param.error == 'failed'}">
+        <p style="color: red;">Registration failed. Please try again.</p>
+    </c:if>
+    <c:if test="${param.success == 'true'}">
+        <p style="color: green;">Registration successful. You can now <a href="login.jsp">login</a>.</p>
+    </c:if>
+</body>
+</html>

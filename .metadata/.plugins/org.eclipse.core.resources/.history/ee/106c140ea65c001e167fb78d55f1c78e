@@ -1,0 +1,37 @@
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/AddTaskServlet")
+public class AddTaskServlet extends HttpServlet {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    // Récupérez les données du formulaire
+	    String description = request.getParameter("description");
+	    String state = request.getParameter("state");
+	    
+	    // Vérifiez si la case à cocher a été cochée
+	    boolean isCompleted = "completed".equals(state);
+	    
+	    // Récupérez l'ID de l'utilisateur (vous devez le stocker dans la session lors de la connexion de l'utilisateur)
+	    int userId = 1; // Remplacez ceci par la vraie récupération de l'ID de l'utilisateur
+
+	    // Créez une instance de la tâche
+	    Task task = new Task(description, isCompleted, userId);
+
+	    // Utilisez le DAO pour ajouter la tâche dans la base de données
+	    TaskDAO taskDAO = new TaskDAO();
+	    boolean taskAdded = taskDAO.addTask(task);
+
+	    if (taskAdded) {
+	        // Redirigez l'utilisateur vers la page de tableau de bord après l'ajout de la tâche
+	        response.sendRedirect("dashbrd.jsp");
+	    } else {
+	        // Gérez l'échec de l'ajout de la tâche ici (par exemple, affichez un message d'erreur)
+	        response.sendRedirect("error.jsp");
+	    }
+	}
+
+}

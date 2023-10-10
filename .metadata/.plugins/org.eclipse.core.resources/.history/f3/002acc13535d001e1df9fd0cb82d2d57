@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Bienvenue sur le tableau de bord</h2>
+    
+    <!-- Affichez le nom d'utilisateur de l'utilisateur connecté -->
+    <p>Bonjour, <%= session.getAttribute("username") %> !</p>
+    
+    <!-- Affichez d'autres informations sur l'utilisateur -->
+    <p>Informations sur l'utilisateur :</p>
+    <ul>
+        <li>ID : <%= session.getAttribute("userId") %></li>
+        <li>Nom d'utilisateur : <%= session.getAttribute("username") %></li>
+        <!-- Vous pouvez afficher d'autres informations sur l'utilisateur ici -->
+    </ul>
+    <a href="addTask.jsp">Ajouter une tâche</a>
+    
+    <!-- Ajoutez un lien de déconnexion pour déconnecter l'utilisateur -->
+    <a href="logout.jsp">Déconnexion</a>
+
+    <!-- Affichez les tâches de l'utilisateur -->
+    <h3>Tâches :</h3>
+    <ul>
+        <% 
+            // Récupérez les tâches de l'utilisateur à partir de l'attribut de demande
+            List<Task> userTasks = (List<Task>) request.getAttribute("userTasks");
+            for (Task task : userTasks) {
+        %>
+        <li><%= task.getDescription() %> - <%= task.isCompleted() ? "Terminée" : "Non terminée" %></li>
+        <% } %>
+    </ul>
+</body>
+</html>

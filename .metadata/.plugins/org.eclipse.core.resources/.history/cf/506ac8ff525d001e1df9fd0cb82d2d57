@@ -1,0 +1,26 @@
+import java.io.IOException;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/DashboardServlet")
+public class DashboardServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Récupérez l'ID de l'utilisateur depuis la session
+        int userId = (int) request.getSession().getAttribute("userId");
+
+        // Utilisez le DAO pour récupérer les tâches de l'utilisateur
+        TaskDAO taskDAO = new TaskDAO();
+        List<Task> userTasks = taskDAO.getUserTasks(userId);
+
+        // Définissez les tâches comme attribut de demande
+        request.setAttribute("userTasks", userTasks);
+
+        // Redirigez vers la page de tableau de bord (dashbrd.jsp)
+        request.getRequestDispatcher("dashbrd.jsp").forward(request, response);
+    }
+}

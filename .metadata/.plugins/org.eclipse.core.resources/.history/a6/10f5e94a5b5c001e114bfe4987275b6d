@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h2>User Dashboard</h2>
+    
+    <c:set var="loggedInUser" value="${sessionScope.username}" />
+
+    <p>Hello, <c:out value="${loggedInUser}" />!</p>
+    
+    <%-- Retrieve user information from the database using UserDAO --%>
+    <%
+        String username = (String) session.getAttribute("username");
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.getUserByUsername(username); // Implement this method in your UserDAO
+    %>
+
+    <p>Name: <c:out value="${user.name}" /></p>
+    <p>Email: <c:out value="${user.email}" /></p>
+    
+    <a href="logout.jsp">Logout</a>
+</body>
+</html>
